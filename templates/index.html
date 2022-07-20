@@ -1,0 +1,286 @@
+{% load static  %}
+
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.2/font/bootstrap-icons.css"
+        integrity="sha384-eoTu3+HydHRBIjnCVwsFyCpUDZHZSFKEJD0mc3ZqSBSb6YhZzRHeiomAUWCstIWo" crossorigin="anonymous">
+
+    <!-- jQuery library -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
+
+    <!-- Popper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- <s src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+
+
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    <title>المنشأت</title>
+</head>
+
+<body>
+    <div class="sidebar">
+        <div class="logo-details">
+            <i class='bx bx-menu' id="btn"></i>
+        </div>
+        <ul class="nav-list">
+
+
+  <li>
+            <a href="{%   url 'home' %}">
+              <i class='bx bx-home'></i>
+              <span class="links_name">الرئيسية</span>
+            </a>
+
+          </li>
+            {% if user.is_authenticated %}
+            {%else%}
+             <li>
+            <a href="{%   url 'log' %}">
+              <i class='bx bx-user'></i>
+              <span class="links_name">تسجيل الدخول </span>
+            </a>
+
+          </li>
+            {% endif %}
+
+
+
+
+
+            {% if user.is_authenticated %}
+
+          <li>
+            <a href="{%   url 'org' %}">
+              <i class='bx bx-building'></i>
+              <span class="links_name">ادارة المنشأة</span>
+            </a>
+            <!-- <span class="tooltip">Messages</span> -->
+          </li>
+            {% endif %}
+
+            {% if user.is_authenticated %}
+             {% if user.user_company.number_company %}
+            {%else%}
+
+          <li>
+            <a href="{%   url 'fat' %}">
+              <i class='bx bx-pie-chart-alt-2'></i>
+              <span class="links_name">الخدمات المالية</span>
+            </a>
+          </li>
+            {% endif %}
+            {% endif %}
+
+
+
+            {% if user.is_authenticated %}
+
+          <li>
+            <a href="{%   url 'notify' %}">
+               <i class='bx bx-bell' style="font-size: 28px;"></i>
+              <span class="links_name" style="position: relative;">التنبيهات</span>
+                {% if count_notifiy %}
+              <span class="notification">{{count_notifiy}}</span>
+                            {% endif %}
+
+            </a>
+          </li>
+            {% endif %}
+
+        </ul>
+    </div>
+
+    <br><br>
+    {% if user.is_authenticated %}
+
+<div style="margin-right: 80%; color: white; font-size: 18px;">
+
+        <!-- <a href="login.html">
+            <i class='bx bx-user'></i>
+            <span class="links_name">ريم</span>
+        </a> -->
+        <div class="dropdown">
+            <span>المستخدم الحالي</span>
+            <button class="dropbtn"> <i class='bx bx-user'></i></button>
+
+            <span class="links_name">{{user.username}}</span>
+
+            <div class="dropdown-content">
+
+              <a href="{%   url 'changepass' %}">اعادة تعيين كلمة المرور</a>
+              <a href="{%   url 'logout' %}">تسجيل خروج</a>
+            </div>
+          </div>
+
+</div>
+{% endif %}
+
+    <!-- //////////////////////////////////////////////////////////// -->
+        {% if user.is_authenticated %}
+
+    <br>
+    <a href="{%   url 'download_excel' %}" style="margin-right: 80%; color: white;">تحميل معلومات المشتركين </a>
+
+    {% endif %}
+
+
+    {% if user.is_authenticated %}
+                 {% if user.user_company.number_company %}
+
+
+
+
+    <a href="{%   url 'download_file' %}" style="margin-right: 80%; color: white;">تحميل التقرير الشهري </a>
+   <br>
+   <br>
+        {% endif %}
+
+    {% endif %}
+
+
+    <br>
+    <br>
+
+    <div class="cont">
+        {% for c in page_obj %}
+
+        <div class="contFlex">
+            <h4> &nbsp;&nbsp;&nbsp; {{c.name_company }} </h4>
+            <span class="dot" style="color:white">{{forloop.counter}}</span>
+            <span class="name">{{c.name_company}}</span>
+            <br>
+            <div style="margin-right: 10%;">
+
+                <span> رقم المنشآه:</span>
+              <p style="display: inline-block;">{{c.num_company}}</p>
+            <br>
+            <span>1- الحالة: {{c.status}} </span>
+            <br>
+            <span>2- الرقم الموحد : {{c.unified_number}}</span>
+            <br>
+            <span>3- رقم السجل التجاري : {{c.num_selling_record}}</span>
+            <br>
+            <br>
+            <a href="{%  url 'clerk' c.num_company %}">عرض التفاصيل</a>
+        </div>
+        </div>
+                {% endfor %}
+
+    </div>
+
+
+
+
+    <br><br><br>
+    {% if page_obj.has_other_pages %}
+
+    <div class="w3-container" style="text-align: center;">
+
+
+      <div class="w3-bar">
+        {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}" class="w3-button" style="color:white">&laquo;</a>
+        {% else %}
+        <a href="#" class="w3-button" style="color:white">&laquo;</a>
+
+
+        {% endif %}
+
+        {% for page_num in page_obj.paginator.page_range %}
+
+        {% if page_obj.number == page_num %}
+        <a href="#" class="w3-button" style="color:rgb(224, 127, 210)"> {{ page_num }} </a>
+
+
+        {% else %}
+        <a href="?page={{ page_num }}" class="w3-button" style="color:white"> {{ page_num }} </a>
+
+        {%endif%}
+        {%endfor%}
+
+
+
+
+        {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}" class="w3-button" style="color:white">&raquo;</a>
+        {% else %}
+        <a href="#" class="w3-button" style="color:white">&raquo;</a>
+
+
+        {%endif%}
+      </div>
+
+    </div>
+    {% endif %}
+
+
+    <br><br><br>
+
+    <script>
+
+
+        /* Loop through all dropdown buttons to toggle between hiding and showing its dropdown content - This allows the user to have multiple dropdowns without any conflict */
+        var dropdown = document.getElementsByClassName("dropdown-btn");
+        var i;
+
+        for (i = 0; i < dropdown.length; i++) {
+            dropdown[i].addEventListener("click", function () {
+                this.classList.toggle("active");
+                var dropdownContent = this.nextElementSibling;
+                if (dropdownContent.style.display === "block") {
+                    dropdownContent.style.display = "none";
+                } else {
+                    dropdownContent.style.display = "block";
+                }
+            });
+        }
+
+
+        let sidebar = document.querySelector(".sidebar");
+        let closeBtn = document.querySelector("#btn");
+        let searchBtn = document.querySelector(".bx-search");
+
+        closeBtn.addEventListener("click", () => {
+            sidebar.classList.toggle("open");
+            menuBtnChange();//calling the function(optional)
+        });
+
+        searchBtn.addEventListener("click", () => { // Sidebar open when you click on the search iocn
+            sidebar.classList.toggle("open");
+            menuBtnChange(); //calling the function(optional)
+        });
+
+        // following are the code to change sidebar button(optional)
+        function menuBtnChange() {
+            if (sidebar.classList.contains("open")) {
+                closeBtn.classList.replace("bx-menu", "bx-menu-alt-right");//replacing the iocns class
+            } else {
+                closeBtn.classList.replace("bx-menu-alt-right", "bx-menu");//replacing the iocns class
+            }
+        }
+
+
+    </script>
+
+</body>
+
+</html>
